@@ -1,2 +1,4 @@
 # appSpaceJavier
-Repo for learning and experimentation
+Repo for learning and experimentation.
+
+Javier Sanchez
