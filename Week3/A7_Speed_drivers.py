@@ -1,0 +1,10 @@
+def check_speed(speed=0):
+    if speed > 70:
+        delta = speed - 70
+        points = int(delta / 5)
+        print("Police: You went so fast! You have to pay a tax of {} points".format(points))
+    else:
+        print("Police: Okey, continue")
+        
+check_speed(84)
+    
