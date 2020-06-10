@@ -1,4 +1,8 @@
 inp = [1,2,3,4,5]
 
-print(inp[0], "First")
-print(inp.pop(), "Last")
+first = inp[0]
+last = inp.pop()
+print(first, "First")
+print(last, "Last")
+
+print(first == last, "complex checker")
