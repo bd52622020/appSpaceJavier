@@ -1,0 +1,69 @@
+from pyspark import SparkContext, SparkConf, SQLContext
+import pyspark.sql.functions as F
+from parsers import parse_movie, parse_rating, parse_movie_genres, parse_date, drop_empty_dates
+from pyspark.sql import SparkSession
+
+def ten_top_rated_movies(df):
+    # MOVIE_ID | LEN(RATINGS)
+    return df.groupByKey().mapValues(len)
+
+def sum_column(acum, n):
+    # Sum tuple + tuple
+    return tuple(map(lambda i, j: i + j, acum, n))
+    
+if __name__ == "__main__":
+    conf = SparkConf().setAppName("queries").setMaster("local")
+    sc = SparkContext(conf=conf)
+    ss = SparkSession(sc)
+    sq = SQLContext(sc)
+    
+    ratings_text = sc.textFile("data/u.data")
+    movies_text = sc.textFile("data/u.item")
+    
+    # MOVIE_ID | RATING
+    ratings_rdd = ratings_text.map(parse_rating)
+    # MOVIE_ID | MOVIE_TITLE | DATE(STR)
+    # Clean those dates are empty and convert date
+    movies_rdd = movies_text.filter(drop_empty_dates).map(parse_movie) 
+
+    ratings = ss.createDataFrame(ratings_rdd).alias("ratings")
+    movies = ss.createDataFrame(movies_rdd).alias("movies")
+    
+    movies_ratings = movies.join(ratings, movies.movie_id == ratings.movie_id)
+    movies_ratings.show(1)
+    # Q1) Print a list of the 10 movies that received the most number of ratings. 
+    #df_top_rated_movies = ten_top_rated_movies(ratings)
+    #q1 = ratings.groupBy("movie_id").count()
+#     q1.show()
+    
+    # Q2) Print a list of the 10 movies that received the most number of ratings, 
+    # sorted by the number of ratings. 
+    #df_top_rated_movies_sorted = df_top_rated_movies.sortBy((lambda x: x[1]), ascending=False)
+    #q2 = ratings.groupBy("movie_id").count().orderBy('count', ascending=False)
+#     q2.show(10)
+    
+    # Q3) Print a list of the number of ratings received by each genre.
+    # MOVIE_ID | GENRES
+    #movie_genres = movies_text.map(parse_movie_genres)
+    # MOVIE_ID | GENRES | RATINGS
+    #df_movies_genres_ratings = movie_genres.leftOuterJoin(ratings).reduceByKey(lambda acum, n: sum_column(acum, n[0]))
+    
+    # Q4) Print the oldest movie with a “5” rating.
+    movies_ratings.filter(movies_ratings.rating == 5).agg(min("release_date")).show(3)
+#     q3 = movies.orderBy("release_date", ascending=False)
+#     movies_clean = movies.filter(lambda x: x[1][1] != '').map(parse_date)
+#     oldest_movies = sorted(movies_clean.take(10), key=lambda x: x[1][1])
+#     oldest_movies = movies_clean.sortBy(lambda x: x[1][1]).take(10)
+    
+    
+#     res = oldest_movies
+    
+#     movies_ratings = movies_ratings(ratings)
+#     users_text = sc.textFile("data/u.users")
+#     example = sc.parallelize([1, 2, 3, 4, 5])
+    
+#     movies = movies_text.map(lambda row: row.split("|"))
+#     users = users_text.map(lambda row: row.split("|"))
+    
+#     for _ in ratings.take(10):
+#         print(_)
