@@ -1,0 +1,15 @@
+1. Download HBase
+
+2. Start Hbase service
+bin/start-hbase.sh
+
+3. Check if Hbase service is running
+jps // look if it is running
+
+4. Run HBase shell
+bin/hbase shell
+
+5. Create table to introduce data
+bin/hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='<Separator>' -Dimporttsv.columns='HBASE_ROW_KEY,<CULUMN_FAMILYNAME:COLUMN>’ <table_name> <path_file>
+
+Ready
