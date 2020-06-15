@@ -1,3 +1,5 @@
 .ip*
 *.db
 .metadata
+__pycache
+
