@@ -10,6 +10,8 @@ jps // look if it is running
 bin/hbase shell
 
 5. Create table to introduce data
+create <table_name>, <column_family_name>
+
 bin/hbase org.apache.hadoop.hbase.mapreduce.ImportTsv -Dimporttsv.separator='<Separator>' -Dimporttsv.columns='HBASE_ROW_KEY,<CULUMN_FAMILYNAME:COLUMN>’ <table_name> <path_file>
 
 Ready
