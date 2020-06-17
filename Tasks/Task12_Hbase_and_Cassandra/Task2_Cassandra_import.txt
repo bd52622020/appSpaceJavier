@@ -1,0 +1,24 @@
+1. Start cassandra
+./bin/cassandra
+
+2. Run cassandra  cql API
+./bin/cqlsh
+
+3. Create table and introduce data with schema
+CREATE KEYSPACE lens WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+CREATE TABLE lens.movies (
+  name varchar, 
+  adjective varchar, 
+  age int, 
+  dead int, 
+  genre varchar,
+  PRIMARY KEY (name)
+);
+
+4. Load table into cassandra
+COPY lens.movies (name, adjective, age, dead, genre) 
+FROM '/home/javi/Desktop/Workspaces/data/fav.data'
+WITH DELIMITER = '|';
+
+
+
