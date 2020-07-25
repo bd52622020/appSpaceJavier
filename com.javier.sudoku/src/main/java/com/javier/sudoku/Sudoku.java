@@ -171,6 +171,7 @@ public class Sudoku {
 					grid[i][j] = j_value.contentEquals("") ? 0 : Integer.parseInt(j_value);
 					
 					if (grid[i][j] < 0 || grid[i][j] > 9) {
+						br.close();
 						System.out.println("ERROR: Numbers are not between 0 and 9");
 						this.valid_input = false;
 						return grid;
@@ -199,10 +200,9 @@ public class Sudoku {
 	}
 
 	public static void main(String[] args) {
-		String fileName = "sudoku.txt";
-		
+		System.out.println("Validating sudoku...\n...");
+		String fileName = args[0];
 		Sudoku sudoku = new Sudoku(fileName);
-		sudoku.print_sudoku();
 		sudoku.valid_sudoku();		
 	}
 }
